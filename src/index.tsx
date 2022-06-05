@@ -1,16 +1,30 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-import reportWebVitals from './reportWebVitals';
+import "./index.css";
+import App from "./App";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import reportWebVitals from "./reportWebVitals";
+import { DefaultContextProvider } from "./contexts/DefaultContext";
+import { createRoot } from "react-dom/client";
+import { AuthProvider } from "./contexts/AuthContext";
+import { createClient } from "@supabase/supabase-js";
+import { Provider } from "react-supabase";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+const client = createClient(
+  "https://hawphvafdddzppaodijn.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhd3BodmFmZGRkenBwYW9kaWpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTQzNjI1NDgsImV4cCI6MTk2OTkzODU0OH0.ev7nxlfbPPxf0KBqRquXCX_CUvCGIm_MKTAqOCeD_ho",
+  { persistSession: true, autoRefreshToken: true, localStorage }
 );
+
+const container = document.getElementById("root");
+container &&
+  createRoot(container).render(
+    <Provider value={client}>
+      <AuthProvider>
+        <DefaultContextProvider>
+          <App />
+        </DefaultContextProvider>
+      </AuthProvider>
+    </Provider>
+  );
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
