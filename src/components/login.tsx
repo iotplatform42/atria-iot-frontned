@@ -31,6 +31,9 @@ export function Login() {
       alert(error?.message || signupProps.error?.message);
       return;
     }
+    if (signupProps.user) {
+      window.location.reload();
+    }
     if (user) {
       navigate("/dashboard");
     }
